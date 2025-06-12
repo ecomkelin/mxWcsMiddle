@@ -1,7 +1,6 @@
 const { initializeUsers } = require('./_structure/user.seed');
 const { initializeCompanies } = require('./_structure/company.seed');
 const { initializeDepartments } = require('./_structure/department.seed');
-const { initializeProducts } = require('./product.seed');
 const { initializeApiPermissions } = require('./_auth/apiPermission.seed');
 
 // 定义模块初始化顺序
@@ -9,16 +8,14 @@ const INIT_ORDER = [
   'apiPermissions',  // 添加API权限初始化
   'companies', 
   'departments', 
-  'users', 
-  'products',
+  'users'
 ];
 
 const INIT_FUNCTIONS = {
   apiPermissions: initializeApiPermissions,  // 添加初始化函数
   users: initializeUsers,
   companies: initializeCompanies,
-  departments: initializeDepartments,
-  products: initializeProducts,
+  departments: initializeDepartments
 };
 
 async function initializeAll(modules = INIT_ORDER) {
