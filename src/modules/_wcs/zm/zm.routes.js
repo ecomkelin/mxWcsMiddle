@@ -6,6 +6,8 @@ const { lightTurnOnValidator, locationStatusValidator, feedbackSensorValidator }
 
 // router.use(authenticate);
 /** 点亮货位： 亮灯引导出库 */
+// 亮灯循环 缓存
+// 自动灭灯
 router.post('/light/turnOn',
   // authorize('/department', 'post'),
   lightTurnOnValidator,

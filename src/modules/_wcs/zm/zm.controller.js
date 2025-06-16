@@ -3,14 +3,6 @@ const asyncHandler = require("../../../utils/asyncHandler");
 const { validationResult } = require("express-validator");
 const zmService = require("./zm.service");
 
-const validColors = {
-  "0": 0, "灭灯": 0,
-  "32": 32, "红色": 32,
-  "64": 64, "绿色": 64,
-  "96": 96, "蓝色": 96,
-  "128": 128, "黄色": 128,
-  "160": 160, "品红": 160
-};
 
 exports.lightTurnOn = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
@@ -19,23 +11,10 @@ exports.lightTurnOn = asyncHandler(async (req, res) => {
       .status(400)
       .json(ApiResponse.validationError("验证失败", errors.array()));
   }
-  let { TwinkleTime, items } = req.body;
-  if (!TwinkleTime) TwinkleTime = 10; // 默认值
-  // console.log("items", items);
-  for (const item of items) {
-    if (item.LightColor && validColors[item.LightColor] !== undefined) {
-      item.LightColor = validColors[item.LightColor];
-    } else {
-      item.LightColor = 160; // 默认值
-    }
-  }
-  // console.log("items after processing", items);
+  const { TwinkleTime, items } = req.body;
 
   const data = zmService.lightTurnOn(
-    {
-      TwinkleTime,
-      items
-    },
+    { TwinkleTime, items },
     // req.user._id
   );
 
@@ -66,10 +45,10 @@ exports.feedbackSensor = asyncHandler(async (req, res) => {
       .status(400)
       .json(ApiResponse.validationError("验证失败", errors.array()));
   }
-  const data = req.body;
+  const { LocationId, State, LightColor, time } = req.body;
 
   const isSuccess = zmService.feedbackSensor(
-    data,
+    { LocationId, State, LightColor, time },
     // req.user._id
   );
   if (!isSuccess) {

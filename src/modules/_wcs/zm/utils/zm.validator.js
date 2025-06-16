@@ -4,9 +4,9 @@ exports.lightTurnOnValidator = [
   // 校验 TwinkleTime 字段
   body("TwinkleTime")
     .optional()
-    .default(10)
-    .isInt({ min: 0, max: 60 })
-    .withMessage("TwinkleTime 必须是 0 到 60 之间的数字")
+    .default(30)
+    .isInt({ min: 0, max: 10 })
+    .withMessage("TwinkleTime 必须是 0 到 10 之间的数字")
     .toInt(),
 
   // 校验 items 数组
