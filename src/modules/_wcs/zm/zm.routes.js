@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const zmController = require("./zm.controller");
 // const { authenticate, authorize } = require("../../../middlewares/auth");
-const { lightTurnOnValidator, locationStatusValidator, feedbackSensorValidator } = require("./utils/zm.validator");
+const { lightTurnOnValidator, lightTurnOnAllValidator, locationStatusValidator, feedbackSensorValidator } = require("./utils/zm.validator");
 
 // router.use(authenticate);
 /** 点亮货位： 亮灯引导出库 */
@@ -12,6 +12,17 @@ router.post('/light/turnOn',
   // authorize('/department', 'post'),
   lightTurnOnValidator,
   zmController.lightTurnOn
+);
+
+router.get('/light/turnOnAll',
+  // authorize('/department', 'post'),
+  lightTurnOnAllValidator,
+  zmController.lightTurnOnAll
+);
+router.get('/light/turnOffAll',
+  // authorize('/department', 'post'),
+  lightTurnOnAllValidator,
+  zmController.lightTurnOffAll
 );
 
 /** 获取货位状态 */

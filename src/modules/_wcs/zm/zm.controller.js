@@ -11,12 +11,35 @@ exports.lightTurnOn = asyncHandler(async (req, res) => {
       .status(400)
       .json(ApiResponse.validationError("验证失败", errors.array()));
   }
-  const { TwinkleTime, items } = req.body;
-
-  const data = zmService.lightTurnOn(
-    { TwinkleTime, items },
-    // req.user._id
+  const { TwinkleTime, LightColor, LocationIds } = req.body;
+  const result = await zmService.lightTurnOn(
+    { TwinkleTime, LightColor, LocationIds },
   );
+  res.status(200).json(ApiResponse.success(result, "灯光亮起成功"));
+});
+
+exports.lightTurnOnAll = asyncHandler(async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(400)
+      .json(ApiResponse.validationError("验证失败", errors.array()));
+  }
+  const { ShelfIds } = req.body;
+  const data = zmService.lightTurnOnAll({ ShelfIds });
+
+  res.status(200).json(ApiResponse.success(data, "灯光亮起成功"));
+});
+
+exports.lightTurnOffAll = asyncHandler(async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(400)
+      .json(ApiResponse.validationError("验证失败", errors.array()));
+  }
+  const { ShelfIds } = req.body;
+  const data = zmService.lightTurnOffAll({ ShelfIds });
 
   res.status(200).json(ApiResponse.success(data, "灯光亮起成功"));
 });
@@ -47,8 +70,16 @@ exports.feedbackSensor = asyncHandler(async (req, res) => {
   }
   const { LocationId, State, LightColor, time } = req.body;
 
+  let updateTime = new Date();
+  if (time) {
+    const formattedTimeString = time
+      .replace(/\s/g, ' ') // 替换所有空格字符为普通空格
+      .replace(' ', 'T');  // 将第一个空格替换为T
+    updateTime = new Date(formattedTimeString);
+  }
+
   const isSuccess = zmService.feedbackSensor(
-    { LocationId, State, LightColor, time },
+    { LocationId, State, LightColor, updateTime },
     // req.user._id
   );
   if (!isSuccess) {
