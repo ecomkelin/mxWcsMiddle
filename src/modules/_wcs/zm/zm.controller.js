@@ -18,31 +18,19 @@ exports.lightTurnOn = asyncHandler(async (req, res) => {
   res.status(200).json(ApiResponse.success(result, "灯光亮起成功"));
 });
 
-exports.lightTurnOnAll = asyncHandler(async (req, res) => {
+exports.turnOnMultiple = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res
       .status(400)
       .json(ApiResponse.validationError("验证失败", errors.array()));
   }
-  const { ShelfIds } = req.body;
-  const data = zmService.lightTurnOnAll({ ShelfIds });
+  const { ShelfIds, status, turn } = req.body;
+  const data = zmService.turnOnMultiple({ ShelfIds, status, turn });
 
   res.status(200).json(ApiResponse.success(data, "灯光亮起成功"));
 });
 
-exports.lightTurnOffAll = asyncHandler(async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res
-      .status(400)
-      .json(ApiResponse.validationError("验证失败", errors.array()));
-  }
-  const { ShelfIds } = req.body;
-  const data = zmService.lightTurnOffAll({ ShelfIds });
-
-  res.status(200).json(ApiResponse.success(data, "灯光亮起成功"));
-});
 
 exports.getLocationStatus = asyncHandler(async (req, res) => {
   const errors = validationResult(req);

@@ -35,11 +35,21 @@ exports.lightTurnOnValidator = [
 
 ];
 
-exports.lightTurnOnAllValidator = [
+exports.lightTurnOnMultipleValidator = [
   // 校验 items 数组
   body("ShelfIds")
     .isArray({ min: 1 })
-    .withMessage("LocationIds 必须是包含至少一个元素的数组")
+    .withMessage("LocationIds 必须是包含至少一个元素的数组"),
+
+  body("status")
+    .optional()
+    .isIn(['0', '1', 'all', 0, 1])
+    .withMessage("status 必须是 0 或 1"),
+
+  body("turn")
+    .notEmpty()
+    .isIn(['on', 'off'])
+    .withMessage("turn 必须是 'on' 或 'off'")
 ];
 
 
