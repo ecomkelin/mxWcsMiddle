@@ -5,6 +5,8 @@
   "main": "src/app.js",
   "scripts": {
     "pm2": "pm2 start src/app.js --name \"wcs_middleware\"",
+    "pm2:restart": "pm2 restart wcs_middleware",
+    "pm2:stop": "pm2 stop wcs_middleware",
     "dev": "nodemon src/app.js",
     "test": "cross-env NODE_ENV=test jest --config jest.config.js --detectOpenHandles --forceExit --maxWorkers=1",
     "test:watch": "jest --watch",
