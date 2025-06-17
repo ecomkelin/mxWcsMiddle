@@ -45,8 +45,9 @@ class ZmService {
 
     // 赋值
     if (isCircular) {
+      const nextColorValue = nextColor(); // 获取下一个颜色值
       for (const item of items) {
-        item.LightColor = nextColor(); // 如果是灭灯，使用下一个颜色值
+        item.LightColor = nextColorValue; // 如果是灭灯，使用下一个颜色值
       }
     }
 
