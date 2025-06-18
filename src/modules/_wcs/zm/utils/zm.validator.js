@@ -1,12 +1,12 @@
 const { body, query } = require("express-validator");
 
-exports.lightTurnOnValidator = [
+exports.lightLocationValidator = [
   // 校验 TwinkleTime 字段
-  body("TwinkleTime")
+  body("twinkleTime")
     .optional()
     .default(30)
     .isInt({ min: 0, max: 10 })
-    .withMessage("TwinkleTime 必须是 0 到 10 之间的数字")
+    .withMessage("twinkleTime 必须是 0 到 10 之间的数字")
     .toInt(),
   // body("LightColor")
   //   .optional()
@@ -28,19 +28,14 @@ exports.lightTurnOnValidator = [
   //   }),
 
   // 校验 items 数组
-  body("LocationIds")
+  body("locationIds")
     .isArray({ min: 1 })
-    .withMessage("LocationIds 必须是包含至少一个元素的数组")
+    .withMessage("locationIds 必须是包含至少一个元素的数组")
 
 
 ];
 
-exports.lightTurnOnMultipleValidator = [
-  // 校验 items 数组
-  body("ShelfIds")
-    .isArray({ min: 1 })
-    .withMessage("LocationIds 必须是包含至少一个元素的数组"),
-
+exports.lightShelfValidator = [
   body("status")
     .optional()
     .isIn(['0', '1', 'all', 0, 1])
@@ -55,11 +50,11 @@ exports.lightTurnOnMultipleValidator = [
 
 exports.locationStatusValidator = [
   // 校验 TwinkleTime 字段
-  query("LocationId")
+  query("locationId")
     .notEmpty()
-    .withMessage("LocationId 不能为空")
+    .withMessage("locationId 不能为空")
     .isLength({ min: 10, max: 10 })
-    .withMessage("LocationId 必须是 10 位字符")
+    .withMessage("locationId 必须是 10 位字符")
 ];
 
 exports.feedbackSensorValidator = [

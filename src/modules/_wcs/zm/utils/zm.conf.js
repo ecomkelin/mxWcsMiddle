@@ -1,3 +1,4 @@
+exports.shelfCodes = ["W1103", "W0291", "W0305", "W0830"];
 
 exports.lightColors = {
     "0": 0, "灭灯": 0,

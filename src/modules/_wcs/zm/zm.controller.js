@@ -2,33 +2,39 @@ const ApiResponse = require("../../../utils/response");
 const asyncHandler = require("../../../utils/asyncHandler");
 const { validationResult } = require("express-validator");
 const zmService = require("./zm.service");
+const { shelfCodes } = require('./utils/zm.conf');
 
 
-exports.lightTurnOn = asyncHandler(async (req, res) => {
+
+exports.lightLocation = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res
       .status(400)
       .json(ApiResponse.validationError("验证失败", errors.array()));
   }
-  const { TwinkleTime, LightColor, LocationIds } = req.body;
-  const result = await zmService.lightTurnOn(
-    { TwinkleTime, LightColor, LocationIds },
+  const { twinkleTime, lightColor, locationIds } = req.body;
+  const result = await zmService.lightLocation(
+    { twinkleTime, lightColor, locationIds },
   );
   res.status(200).json(ApiResponse.success(result, "灯光亮起成功"));
 });
 
-exports.turnOnMultiple = asyncHandler(async (req, res) => {
+exports.lightShelf = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res
       .status(400)
       .json(ApiResponse.validationError("验证失败", errors.array()));
   }
-  const { ShelfIds, status, turn, quantity } = req.body;
-  if (!quantity) quantity = 0;
 
-  const data = zmService.turnOnMultiple({ ShelfIds, status, turn, quantity });
+  const { shelfIds, status, turn, lightQuantity } = req.body;
+  if (!lightQuantity) lightQuantity = 0;
+  if (!shelfIds || shelfIds.length === 0) {
+    shelfIds = shelfCodes; // 确保 ShelfIds 是一个数组
+  }
+
+  const data = zmService.lightShelf({ shelfIds, status, turn, lightQuantity });
 
   res.status(200).json(ApiResponse.success(data, "灯光亮起成功"));
 });
@@ -42,9 +48,9 @@ exports.getLocationStatus = asyncHandler(async (req, res) => {
       .json(ApiResponse.validationError("验证失败", errors.array()));
   }
 
-  const { LocationId } = req.query;
+  const { locationId } = req.query;
   const data = await zmService.getLocationStatus(
-    { LocationId },
+    { locationId },
     // req.user._id
   );
   res.status(200).json(ApiResponse.success(data, "获取状态成功"));

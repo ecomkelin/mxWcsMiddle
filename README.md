@@ -89,5 +89,103 @@ export interface Request {
 
 ## 2 货架亮灯
 ### 根据给的货架中货位的状态控制亮或灭灯
-url: /api//zm/light/turnOnMultiple
+url: /api//zm/light/lightShelf
 method: POST
+request: 
+{
+    "type": "object",
+    "properties": {
+        "turn": {
+            "type": "string",
+            "enum": [
+                "on",
+                "off"
+            ],
+            "x-apifox": {
+                "enumDescriptions": {
+                    "on": "",
+                    "off": ""
+                }
+            },
+            "description": "枚举：['on', 'off'] on为亮灯， off为灭灯"
+        },
+        "status": {
+            "type": "string",
+            "enum": [
+                "0",
+                "1",
+                "all"
+            ],
+            "x-apifox": {
+                "enumDescriptions": {
+                    "0": "",
+                    "1": "",
+                    "all": ""
+                }
+            },
+            "description": "枚举：[0, 1, 'all'] 0为空货位， 1为非空货位，all为全货位"
+        },
+        "ShelfIds": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "description": "字符串为 5位"
+            },
+            "description": "至少一个元素"
+        },
+        "quantity": {
+            "type": "integer",
+            "description": "如果为0或者为空 则不限制数量",
+            "title": "亮灯的数量"
+        }
+    },
+    "required": [
+        "ShelfIds"
+    ],
+    "x-apifox-orders": [
+        "turn",
+        "quantity",
+        "status",
+        "ShelfIds"
+    ]
+}
+
+/**
+ * Request
+ */
+export interface Request {
+    /**
+     * 亮灯的数量，如果为0或者为空 则不限制数量
+     */
+    quantity?: number;
+    /**
+     * 至少一个元素
+     */
+    shelfIds: string[];
+    /**
+     * 枚举：[0, 1, 'all'] 0为空货位， 1为非空货位，all为全货位
+     */
+    status?: Status;
+    /**
+     * 枚举：['on', 'off'] on为亮灯， off为灭灯
+     */
+    turn?: Turn;
+    [property: string]: any;
+}
+
+/**
+ * 枚举：[0, 1, 'all'] 0为空货位， 1为非空货位，all为全货位
+ */
+export enum Status {
+    All = "all",
+    The0 = "0",
+    The1 = "1",
+}
+
+/**
+ * 枚举：['on', 'off'] on为亮灯， off为灭灯
+ */
+export enum Turn {
+    Off = "off",
+    On = "on",
+}
