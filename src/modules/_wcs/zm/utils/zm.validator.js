@@ -44,7 +44,7 @@ exports.lightTurnOnMultipleValidator = [
   body("status")
     .optional()
     .isIn(['0', '1', 'all', 0, 1])
-    .withMessage("status 必须是 0 或 1"),
+    .withMessage("status 必须是 0 或 1, 或 'all'"),
 
   body("turn")
     .notEmpty()

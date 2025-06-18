@@ -26,3 +26,68 @@ NODE_ENV=development
 
 MX_SERVER_URL=http://192.168.10.8:123123
 ZM_SERVER_URL=http://192.168.10.8:9090
+
+
+# main API
+hostname=http://localhost
+## 1 货位亮灯
+### 根据给的货位位置控制亮或灭灯
+url: hostname/api/zm/light/turnOn 
+method: POST
+request: 
+{
+    "type": "object",
+    "properties": {
+        "TwinkleTime": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10,
+            "examples": [
+                0
+            ],
+            "title": "亮灯秒数",
+            "description": "0为常亮， 最大值为10秒"
+        },
+        "LightColor": {
+            "type": "string",
+            "default": "circle",
+            "description": "不传参数，传递空字符串，值为circle 为循环亮灯。值为0 则为灭灯， 其余值为 [\"红色\",\"蓝色\",\"黄色\",\"绿色\",\"品红\"]"
+        },
+        "LocationIds": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "description": "字符串为10个字符"
+            },
+            "description": "至少有一个值"
+        }
+    },
+    "required": [
+        "LocationIds"
+    ],
+    "x-apifox-orders": [
+        "TwinkleTime",
+        "LightColor",
+        "LocationIds"
+    ]
+}
+export interface Request {
+    /**
+     * 不传参数，传递空字符串，值为circle 为循环亮灯。值为0 则为灭灯， 其余值为 ["红色","蓝色","黄色","绿色","品红"]
+     */
+    lightColor?: string;
+    /**
+     * 至少有一个值
+     */
+    locationIds: string[];
+    /**
+     * 亮灯秒数，0为常亮， 最大值为10秒
+     */
+    twinkleTime?: number;
+    [property: string]: any;
+}
+
+## 2 货架亮灯
+### 根据给的货架中货位的状态控制亮或灭灯
+url: /api//zm/light/turnOnMultiple
+method: POST

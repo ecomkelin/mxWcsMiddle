@@ -25,8 +25,10 @@ exports.turnOnMultiple = asyncHandler(async (req, res) => {
       .status(400)
       .json(ApiResponse.validationError("验证失败", errors.array()));
   }
-  const { ShelfIds, status, turn } = req.body;
-  const data = zmService.turnOnMultiple({ ShelfIds, status, turn });
+  const { ShelfIds, status, turn, quantity } = req.body;
+  if (!quantity) quantity = 0;
+
+  const data = zmService.turnOnMultiple({ ShelfIds, status, turn, quantity });
 
   res.status(200).json(ApiResponse.success(data, "灯光亮起成功"));
 });

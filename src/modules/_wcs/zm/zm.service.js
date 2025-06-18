@@ -19,7 +19,7 @@ class ZmService {
     let { TwinkleTime, LightColor, LocationIds } = data;
     if (!TwinkleTime) TwinkleTime = 0; // 默认值 常量
     // 如果前端给了值
-    if (LightColor !== undefined && LightColor !== null) {
+    if (LightColor !== undefined && LightColor !== null && LightColor !== '' && LightColor !== 'circle') {
       // 如果 LightColor 存在且有效，使用 lightColors 映射
       if (lightColors[LightColor] !== undefined) {
         LightColor = lightColors[LightColor];
@@ -52,7 +52,7 @@ class ZmService {
   }
 
   async turnOnMultiple(data, userId) {
-    let { ShelfIds, status, turn } = data;
+    let { ShelfIds, status, turn, quantity } = data;
     if (status !== 1 && status !== 0) status = 'all'; // 默认值
     if (turn !== 'off') turn = 'on'; // 默认值
 
@@ -76,6 +76,9 @@ class ZmService {
     }
     if (LocationIds.length === 0) {
       throw new Error("没有符合条件的货位");
+    }
+    if (quantity > 0 && LocationIds.length > quantity) {
+      LocationIds = shuffled.slice(0, quantity);
     }
 
     const LightColor = turn === 'on' ? nextColor() : 0; // 如果是开灯，获取下一个颜色值，否则灭灯
