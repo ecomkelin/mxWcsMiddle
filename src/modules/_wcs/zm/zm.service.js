@@ -1,4 +1,3 @@
-const axios = require('axios');
 const { success } = require('../../../utils/response');
 const { lightColors, lightMap, validColorValues } = require('./utils/zm.conf');
 const { lightPostInfo, shelf_locations_status } = require('./utils/zm.wcs');
@@ -55,7 +54,6 @@ class ZmService {
    */
   async lightShelf(data, userId) {
     let { shelfIds = [], status = 'all', turn = 'on', lightQuantity = 0 } = data;
-
     // 输入验证
     if (!Array.isArray(shelfIds) || shelfIds.length === 0) {
       throw new Error("货架ID数组不能为空");
@@ -157,9 +155,8 @@ class ZmService {
    */
   async feedbackSensor(data, userId) {
     const { LocationId, State, LightColor, updateTime } = data;
-
     // 自动灭灯
-    this.lightLocation({ TwinkleTime: 0, LightColor: 0, LocationIds: [LocationId] }, userId);
+    this.lightLocation({ twinkleTime: 0, lightColor: LightColor, locationIds: [LocationId] }, userId);
 
     // 传递给 WMS 校验 暂时不做
     // const stockIO = State == 1 ? 1 : -1; // 1:入库, -1:出库

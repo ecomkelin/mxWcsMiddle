@@ -28,7 +28,7 @@ exports.lightShelf = asyncHandler(async (req, res) => {
       .json(ApiResponse.validationError("验证失败", errors.array()));
   }
 
-  const { shelfIds, status, turn, lightQuantity } = req.body;
+  let { shelfIds, status, turn, lightQuantity } = req.body;
   if (!lightQuantity) lightQuantity = 0;
   if (!shelfIds || shelfIds.length === 0) {
     shelfIds = shelfCodes; // 确保 ShelfIds 是一个数组
@@ -73,7 +73,6 @@ exports.feedbackSensor = asyncHandler(async (req, res) => {
       .replace(' ', 'T');  // 将第一个空格替换为T
     updateTime = new Date(formattedTimeString);
   }
-
   const isSuccess = zmService.feedbackSensor(
     { LocationId, State, LightColor, updateTime },
     // req.user._id
