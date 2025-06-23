@@ -156,7 +156,7 @@ class ZmService {
   async feedbackSensor(data, userId) {
     const { LocationId, State, LightColor, updateTime } = data;
     // 自动灭灯
-    this.lightLocation({ twinkleTime: 0, lightColor: LightColor, locationIds: [LocationId] }, userId);
+    this.lightLocation({ twinkleTime: 0, lightColor: 0, locationIds: [LocationId] }, userId);
 
     // 传递给 WMS 校验 暂时不做
     // const stockIO = State == 1 ? 1 : -1; // 1:入库, -1:出库
